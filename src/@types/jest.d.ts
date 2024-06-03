@@ -1,0 +1,12 @@
+import { ValueObject } from '../nest-modules/shared-module/domain/value-object';
+import { FieldsErrors } from './shared-module/domain/validators/validator-fields-interface';
+
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      //containsErrorMessages: (expected: FieldsErrors) => R;
+      notificationContainsErrorMessages: (expected: Array<FieldsErrors>) => R;
+      toBeValueObject: (expected: ValueObject) => R;
+    }
+  }
+}

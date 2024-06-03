@@ -1,0 +1,31 @@
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+  "name": "Category 1",
+  "description": "Description 1"
+}
+
+###
+GET http://localhost:3000/categories
+Content-Type: application/json
+
+###
+GET http://localhost:3000/categories/12
+Content-Type: application/json
+
+###
+PATCH http://localhost:3000/categories/12
+Content-Type: application/json
+
+###
+DELETE http://localhost:3000/categories/43b2ab2c-1799-41f5-be96-5b3f7ede2631
+Content-Type: application/json
+
+###
+PATCH http://localhost:3000/categories/0ba25e91-b6b2-4f73-85c7-ea363a1957ba/activate
+Content-Type: application/json
+
+###
+PATCH http://localhost:3000/categories/0ba25e91-b6b2-4f73-85c7-ea363a1957ba/deactivate
+Content-Type: application/json

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    command: ./.docker/start.sh
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/node/app
+      - '/etc/timezone:/etc/timezone:ro'
+      - '/etc/localtime:/etc/localtime:ro'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    labels:
+      filebeat_collector: true
+
+  db:
+    image: mysql:8.0.30-debian
+    environment:
+      - MYSQL_DATABASE=micro_videos
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+    volumes:
+       - ./.docker/mysql/dbdata:/var/lib/mysql:delegated
+#       - ./.docker/mysql:/docker-entrypoint-initdb.d
+    security_opt:
+      - seccomp:unconfined
