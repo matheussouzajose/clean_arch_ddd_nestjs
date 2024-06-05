@@ -3,7 +3,6 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { CategoryModel } from '@core/category/infrastructure/persistence/repository/sequelize/category.model';
 import { ConfigService } from '@nestjs/config';
 import { CONFIG_SCHEMA_TYPE } from '../config-module/config.module';
-import { MigrationsModule } from './migrations.module';
 
 const models = [CategoryModel];
 

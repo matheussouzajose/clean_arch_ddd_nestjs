@@ -88,7 +88,10 @@ describe('CategoriesController (e2e)', () => {
         );
       });
       test.each(arrange)('when body is $label', async ({ value }) => {
-        const category = Category.fake().aCategory().withCreatedAt(new Date()).build();
+        const category = Category.fake()
+          .aCategory()
+          .withCreatedAt(new Date())
+          .build();
         await categoryRepo.insert(category);
         return (
           request(app.app.getHttpServer())
@@ -114,7 +117,10 @@ describe('CategoriesController (e2e)', () => {
       test.each(arrange)(
         'when body is $send_data',
         async ({ send_data, expected }) => {
-          const categoryCreated = Category.fake().aCategory().withCreatedAt(new Date()).build();
+          const categoryCreated = Category.fake()
+            .aCategory()
+            .withCreatedAt(new Date())
+            .build();
           await categoryRepo.insert(categoryCreated);
 
           const res = await request(appHelper.app.getHttpServer())
@@ -123,16 +129,15 @@ describe('CategoriesController (e2e)', () => {
             .send(send_data)
             .expect(200);
           const keyInResponse = UpdateCategoryFixture.keysInResponse;
-          expect(Object.keys(res.body)).toStrictEqual(['data']);
-          expect(Object.keys(res.body.data)).toStrictEqual(keyInResponse);
-          const id = res.body.data.id;
+          expect(Object.keys(res.body)).toStrictEqual(keyInResponse);
+          const id = res.body.id;
           const categoryUpdated = await categoryRepo.findById(new Uuid(id));
           const presenter = CategoriesController.serialize(
             CategoryOutputMapper.toOutput(categoryUpdated!),
           );
           const serialized = instanceToPlain(presenter);
-          expect(res.body.data).toStrictEqual(serialized);
-          expect(res.body.data).toStrictEqual({
+          expect(res.body).toStrictEqual(serialized);
+          expect(res.body).toStrictEqual({
             id: serialized.id,
             createdAt: serialized.createdAt,
             name: expected.name ?? categoryUpdated!.getName(),

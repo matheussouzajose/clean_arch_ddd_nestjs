@@ -4,7 +4,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { WrapperDataInterceptor } from './shared-module/interceptors/wrapper-data/wrapper-data.interceptor';
 import { EntityValidationErrorFilter } from './shared-module/filters/entity-validation-error.filter';
 import { NotFoundErrorFilter } from './shared-module/filters/not-found.filter';
 
@@ -16,12 +15,12 @@ export function applyGlobalConfig(app: INestApplication) {
     }),
   );
   app.useGlobalInterceptors(
-    new WrapperDataInterceptor(),
+    // new WrapperDataInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
   );
-  app.useGlobalFilters(
-    new EntityValidationErrorFilter(),
-    new NotFoundErrorFilter(),
-  );
+  // app.useGlobalFilters(
+  // new EntityValidationErrorFilter(),
+  // new NotFoundErrorFilter(),
+  // );
   // app.setGlobalPrefix('api/v1');
 }

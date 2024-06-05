@@ -1,0 +1,44 @@
+type Category {
+    id: UUID!
+    name: String!
+    description: String
+    isActive: Boolean!
+    createdAt: Date!
+}
+
+type CategoriesPaginated {
+    data: [Category]
+    meta: Meta!
+}
+
+input CreateCategoryPayload {
+    name: String!
+    description: String
+    isActive: Boolean
+}
+
+input UpdateCategoryPayload {
+    name: String
+    description: String
+}
+
+input SearchCategories {
+    page: Int
+    perPage: Int
+    sort: String
+    sortDir: String
+    filter: String
+}
+
+type Mutation {
+    createCategory(input: CreateCategoryPayload!): Category!
+    updateCategory(id: UUID!, input: UpdateCategoryPayload!): Category!
+    deleteCategory(id: UUID!): Boolean!
+    activateCategory(id: UUID!): Category!
+    deactivateCategory(id: UUID!): Category!
+}
+
+type Query {
+    getCategory(id: UUID!): Category!
+    searchCategories(searchParams: SearchCategories): CategoriesPaginated!
+}

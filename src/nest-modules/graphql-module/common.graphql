@@ -1,0 +1,26 @@
+scalar Date
+scalar NaiveDateTime
+scalar EmailAddress
+scalar JSON
+scalar URL
+scalar UUID
+
+"Dados da aplicação"
+type SystemInfo {
+    "A versão da aplicação"
+    version: String!
+    "O nome da aplicação"
+    name: String!
+}
+
+type Meta {
+    total: Int
+    currentPage: Int
+    lastPage: Int
+    perPage: Int
+}
+
+type Query {
+    "Recupera informações gerais acerca do Projeto"
+    adminSystemInfo: SystemInfo!
+}

@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nest build",
+    "codegen": "ts-node src/generate-typings.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -59,16 +60,22 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
+    "@apollo/server": "^4.10.4",
+    "@nestjs/apollo": "^12.1.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.2",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/graphql": "^12.1.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/sequelize": "^10.0.1",
+    "apollo-server-express": "^3.13.0",
     "chance": "^1.1.11",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
+    "graphql": "^16.8.1",
+    "graphql-scalars": "^1.23.0",
     "joi": "^17.13.1",
     "lodash": "^4.17.21",
     "module-alias": "^2.2.3",
@@ -78,6 +85,7 @@
     "sequelize": "^6.37.3",
     "sequelize-typescript": "^2.1.6",
     "sqlite3": "^5.1.7",
+    "ts-morph": "^22.0.0",
     "umzug": "^3.8.0",
     "uuid": "^9.0.1"
   }

@@ -91,9 +91,8 @@ describe('CategoriesController (e2e)', () => {
             .expect(201);
 
           const keysInResponse = CreateCategoryFixture.keysInResponse;
-          expect(Object.keys(res.body)).toStrictEqual(['data']);
-          expect(Object.keys(res.body.data)).toStrictEqual(keysInResponse);
-          const id = res.body.data.id;
+          expect(Object.keys(res.body)).toStrictEqual(keysInResponse);
+          const id = res.body.id;
           const categoryCreated = await categoryRepo.findById(new Uuid(id));
 
           const presenter = CategoriesController.serialize(
@@ -101,7 +100,7 @@ describe('CategoriesController (e2e)', () => {
           );
           const serialized = instanceToPlain(presenter);
 
-          expect(res.body.data).toStrictEqual({
+          expect(res.body).toStrictEqual({
             id: serialized.id,
             createdAt: serialized.createdAt,
             ...expected,

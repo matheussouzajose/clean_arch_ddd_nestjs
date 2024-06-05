@@ -58,14 +58,13 @@ describe('CategoriesController (e2e)', () => {
         // .authenticate(nestApp.app)
         .expect(200);
       const keyInResponse = GetCategoryFixture.keysInResponse;
-      expect(Object.keys(res.body)).toStrictEqual(['data']);
-      expect(Object.keys(res.body.data)).toStrictEqual(keyInResponse);
+      expect(Object.keys(res.body)).toStrictEqual(keyInResponse);
 
       const presenter = CategoriesController.serialize(
         CategoryOutputMapper.toOutput(category),
       );
       const serialized = instanceToPlain(presenter);
-      expect(res.body.data).toStrictEqual(serialized);
+      expect(res.body).toStrictEqual(serialized);
     });
   });
 });

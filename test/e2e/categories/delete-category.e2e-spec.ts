@@ -44,7 +44,10 @@ describe('CategoriesController (e2e)', () => {
       const categoryRepo = appHelper.app.get<ICategoryRepository>(
         CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
       );
-      const category = Category.fake().aCategory().withCreatedAt(new Date()).build();
+      const category = Category.fake()
+        .aCategory()
+        .withCreatedAt(new Date())
+        .build();
       await categoryRepo.insert(category);
 
       await request(appHelper.app.getHttpServer())
