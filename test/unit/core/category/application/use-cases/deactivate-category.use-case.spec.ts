@@ -4,7 +4,7 @@ import {
   Uuid,
 } from '@core/shared/domain/value-objects/uuid.vo';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { DeactivateCategoryUseCase } from '@core/category/application/use-cases/deactivate-category/deactivate-category.use-case';
 
 describe('DeactivateCategoryUseCase Unit Tests', () => {
@@ -22,7 +22,7 @@ describe('DeactivateCategoryUseCase Unit Tests', () => {
     );
     const categoryId = new Uuid().value;
     await expect(() => useCase.execute({ id: categoryId })).rejects.toThrow(
-      new NotFoundError(categoryId, Category),
+      new NotFoundError(categoryId),
     );
   });
 
@@ -31,7 +31,7 @@ describe('DeactivateCategoryUseCase Unit Tests', () => {
     const entity = Category.create({ name: 'Movie' });
     expect(entity.getIsActive()).toBeTruthy();
     repository.items = [entity];
-    const output = await useCase.execute({ id: entity.getCategoryId() });
+    const output = await useCase.execute({ id: entity.entityId.value });
     expect(spyUpdate).toHaveBeenCalledTimes(1);
     expect(output.isActive).toBeFalsy();
   });

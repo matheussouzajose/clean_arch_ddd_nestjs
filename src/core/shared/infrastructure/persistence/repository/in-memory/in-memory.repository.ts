@@ -20,7 +20,7 @@ export abstract class InMemoryRepository<
       item.entityId.equals(entityId),
     );
     if (indexFound === -1) {
-      throw new NotFoundError(entityId.value, this.getEntity());
+      throw new NotFoundError(entityId.value);
     }
     this.items.splice(indexFound, 1);
   }
@@ -56,7 +56,9 @@ export abstract class InMemoryRepository<
   }
 
   async findById(entity_id: EntityId): Promise<E | null> {
-    const item = this.items.find((item) => item.entityId.equals(entity_id));
+    const item = this.items.find((item) => {
+      return item.entityId.equals(entity_id);
+    });
     return typeof item === 'undefined' ? null : item;
   }
 
@@ -65,8 +67,6 @@ export abstract class InMemoryRepository<
       return ids.some((id) => entity.entityId.equals(id));
     });
   }
-
-  abstract getEntity(): new (...args: any[]) => E;
 
   async insert(entity: E): Promise<void> {
     this.items.push(entity);
@@ -77,7 +77,7 @@ export abstract class InMemoryRepository<
       return item.entityId.equals(entity.entityId);
     });
     if (indexFound === -1) {
-      throw new NotFoundError(entity.entityId, this.getEntity());
+      throw new NotFoundError(entity.entityId);
     }
     this.items[indexFound] = entity;
   }

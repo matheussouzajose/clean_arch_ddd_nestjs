@@ -3,7 +3,7 @@ type Category {
     name: String!
     description: String
     isActive: Boolean!
-    createdAt: Date!
+    createdAt: String!
 }
 
 type CategoriesPaginated {

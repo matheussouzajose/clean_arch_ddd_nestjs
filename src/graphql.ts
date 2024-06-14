@@ -32,7 +32,7 @@ export interface Category {
     name: string;
     description?: Nullable<string>;
     isActive: boolean;
-    createdAt: Date;
+    createdAt: string;
 }
 
 export interface CategoriesPaginated {

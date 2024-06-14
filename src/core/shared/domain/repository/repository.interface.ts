@@ -15,5 +15,5 @@ export interface IRepository<E extends Entity, EntityId extends ValueObject> {
     notExists: EntityId[];
   }>;
 
-  getEntity(): new (...args: any[]) => E;
+  // getEntity(): new (...args: any[]) => E;
 }

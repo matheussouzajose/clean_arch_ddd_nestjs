@@ -3,7 +3,7 @@ import { UpdateCategoryInput } from '@core/category/application/use-cases/update
 import { ICategoryRepository } from '@core/category/domain/repository/category.repository.interface';
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { EntityValidationError } from '@core/shared/domain/errors/validation.error';
 import {
   CategoryOutput,

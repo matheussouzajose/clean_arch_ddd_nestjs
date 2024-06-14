@@ -1,6 +1,6 @@
 import { IUseCase } from '@core/shared/application/use-case.interface';
 import { CreateCategoryInput } from '@core/category/application/use-cases/create-category/dto/create-category-input.dto';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { ICategoryRepository } from '@core/category/domain/repository/category.repository.interface';
 import { EntityValidationError } from '@core/shared/domain/errors/validation.error';
 import {

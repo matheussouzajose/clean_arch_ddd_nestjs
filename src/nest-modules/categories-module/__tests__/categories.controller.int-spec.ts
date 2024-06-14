@@ -17,7 +17,7 @@ import { GetCategoryUseCase } from '@core/category/application/use-cases/get-cat
 import { DeleteCategoryUseCase } from '@core/category/application/use-cases/delete-category/delete-category.use-case';
 import { CategoryOutputMapper } from '@core/category/application/use-cases/common/category-output.dto';
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import {
   CreateCategoryFixture,
   ListCategoriesFixture,

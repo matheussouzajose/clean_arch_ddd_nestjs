@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { instanceToPlain } from 'class-transformer';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { startApp } from '../../../src/nest-modules/shared-module/testing/helpers';
 import { UpdateCategoryFixture } from '../../../src/nest-modules/categories-module/testing/category-fixture';
 import { ICategoryRepository } from '@core/category/domain/repository/category.repository.interface';

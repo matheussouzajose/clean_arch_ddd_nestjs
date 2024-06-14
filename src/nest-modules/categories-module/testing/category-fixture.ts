@@ -1,4 +1,4 @@
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 
 const _keysInResponse = ['id', 'name', 'description', 'isActive', 'createdAt'];
 

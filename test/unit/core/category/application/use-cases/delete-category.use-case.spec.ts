@@ -5,7 +5,7 @@ import {
   Uuid,
 } from '@core/shared/domain/value-objects/uuid.vo';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 
 describe('DeleteCategoryUseCase Unit Tests', () => {
   let useCase: DeleteCategoryUseCase;
@@ -25,14 +25,14 @@ describe('DeleteCategoryUseCase Unit Tests', () => {
 
     await expect(() =>
       useCase.execute({ id: categoryId.value }),
-    ).rejects.toThrow(new NotFoundError(categoryId.value, Category));
+    ).rejects.toThrow(new NotFoundError(categoryId.value));
   });
 
   test('should delete a category', async () => {
     const items = [Category.create({ name: 'test 1' })];
     repository.items = items;
     await useCase.execute({
-      id: items[0].getCategoryId(),
+      id: items[0].entityId.value,
     });
     expect(repository.items).toHaveLength(0);
   });

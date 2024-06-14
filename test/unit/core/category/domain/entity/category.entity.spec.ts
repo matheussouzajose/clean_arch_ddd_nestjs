@@ -1,4 +1,4 @@
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { ValueObject } from '@core/shared/domain/value-objects/value-object';
 
 describe('Category Unit Test', () => {
@@ -13,11 +13,11 @@ describe('Category Unit Test', () => {
       const category = Category.create({
         name: 'Movie',
       });
-      expect(category.getCategoryId()).toBeDefined();
+      expect(category.entityId.value).toBeDefined();
       expect(category.getName()).toBe('Movie');
       expect(category.getDescription()).toBeNull();
       expect(category.getIsActive()).toBeTruthy();
-      expect(category.getCreatedAt()).toBeInstanceOf(Date);
+      expect(category.getCreatedAt()).toBeDefined();
       expect(category.notification.hasErrors()).toBeFalsy();
       expect(category.entityId).toBeInstanceOf(ValueObject);
     });
@@ -48,15 +48,13 @@ describe('Category Unit Test', () => {
       isActive: true,
       createdAt: '2024-05-27T02:10:56.141Z',
     });
-    expect(category.getCategoryId()).toBe(
+    expect(category.entityId.value).toBe(
       'b97b72b2-a6b9-4caf-b970-24af7aa70fe8',
     );
     expect(category.getName()).toBe('Movie');
     expect(category.getDescription()).toBe('Movie description');
     expect(category.getIsActive()).toBeTruthy();
-    expect(category.getCreatedAt()).toEqual(
-      new Date('2024-05-27T02:10:56.141Z'),
-    );
+    expect(category.getCreatedAt()).toEqual('2024-05-27T02:10:56.141Z');
   });
 
   test('Should change name', () => {

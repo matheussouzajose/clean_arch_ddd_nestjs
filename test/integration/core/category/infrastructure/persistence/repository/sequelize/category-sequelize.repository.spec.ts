@@ -1,6 +1,6 @@
 import { CategorySequelizeRepository } from '@core/category/infrastructure/persistence/repository/sequelize/category-sequelize.repository';
 import { CategoryModel } from '@core/category/infrastructure/persistence/repository/sequelize/category.model';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import {
@@ -57,7 +57,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
       .withCreatedAt(new Date())
       .build();
     await expect(repository.update(entity)).rejects.toThrow(
-      new NotFoundError(entity.getCategoryId(), Category),
+      new NotFoundError(entity.entityId.value),
     );
   });
 
@@ -76,7 +76,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
   test('should throw error on delete when a entity not found', async () => {
     const categoryId = new Uuid();
     await expect(repository.delete(categoryId)).rejects.toThrow(
-      new NotFoundError(categoryId.value, Category),
+      new NotFoundError(categoryId.value),
     );
   });
 
@@ -111,7 +111,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
       });
       searchOutput.items.forEach((item) => {
         expect(item).toBeInstanceOf(Category);
-        expect(item.getCategoryId()).toBeDefined();
+        expect(item.entityId.value).toBeDefined();
       });
       const items = searchOutput.items.map((item) => item.toJSON());
       expect(items).toMatchObject(
@@ -119,7 +119,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
           name: 'Movie',
           description: null,
           isActive: true,
-          createdAt: created_at,
+          createdAt: created_at.toISOString(),
         }),
       );
     });

@@ -24,7 +24,7 @@ describe('CreateCategoryUseCase Unit Tests', () => {
     });
     expect(spyInsert).toHaveBeenCalledTimes(1);
     expect(output).toStrictEqual({
-      id: repository.items[0].getCategoryId(),
+      id: repository.items[0].entityId.value,
       name: 'test',
       description: null,
       isActive: true,
@@ -37,7 +37,7 @@ describe('CreateCategoryUseCase Unit Tests', () => {
     });
     expect(spyInsert).toHaveBeenCalledTimes(2);
     expect(output).toStrictEqual({
-      id: repository.items[1].getCategoryId(),
+      id: repository.items[1].entityId.value,
       name: 'test',
       description: 'some description',
       isActive: false,

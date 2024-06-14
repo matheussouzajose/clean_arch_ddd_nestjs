@@ -1,11 +1,10 @@
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
-import { Entity } from '@core/shared/domain/entity/entity';
 import { CategoryValidatorFactory } from '@core/category/domain/validator/category.validator';
-import { ValueObject } from '@core/shared/domain/value-objects/value-object';
 import { CategoryFakeBuilder } from '@core/category/domain/entity/category-fake.builder';
+import { AggregateRoot } from '@core/shared/domain/entity/aggregate-root';
 
 export type CategoryConstructorProps = {
-  categoryId: Uuid;
+  categoryId: CategoryId;
   name: string;
   description?: string;
   isActive?: boolean;
@@ -25,20 +24,23 @@ export type CategoryRestoreCommand = {
   createdAt: string;
 };
 
-export class Category extends Entity {
-  private readonly categoryId: Uuid;
+export class CategoryId extends Uuid {}
+
+export class Category extends AggregateRoot {
+  private readonly categoryId: CategoryId;
   private name: string;
   private description: string;
   private isActive: boolean;
   private readonly createdAt: Date;
 
-  constructor(props: CategoryConstructorProps) {
+  private constructor(props: CategoryConstructorProps) {
     super();
     this.categoryId = props.categoryId;
     this.name = props.name;
     this.description = props.description ?? null;
     this.isActive = props.isActive ?? true;
-    this.createdAt = props.createdAt;
+    this.createdAt = new Date(props.createdAt);
+    this.validate(['name', 'description', 'isActive']);
   }
 
   static create(props: CategoryCreateCommand): Category {
@@ -72,12 +74,8 @@ export class Category extends Entity {
     return validator.validate(this.notification, this, fields);
   }
 
-  get entityId(): ValueObject {
+  get entityId(): CategoryId {
     return this.categoryId;
-  }
-
-  getCategoryId(): string {
-    return this.categoryId.value;
   }
 
   getName(): string {
@@ -92,8 +90,8 @@ export class Category extends Entity {
     return this.isActive;
   }
 
-  getCreatedAt(): Date {
-    return this.createdAt;
+  getCreatedAt(): string {
+    return this.createdAt.toISOString();
   }
 
   changeName(name: string): void {
@@ -123,7 +121,7 @@ export class Category extends Entity {
       name: this.name,
       description: this.description,
       isActive: this.isActive,
-      createdAt: this.createdAt,
+      createdAt: this.createdAt.toISOString(),
     };
   }
 }

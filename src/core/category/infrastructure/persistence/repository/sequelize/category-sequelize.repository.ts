@@ -3,7 +3,7 @@ import {
   CategorySearchResult,
   ICategoryRepository,
 } from '@core/category/domain/repository/category.repository.interface';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
 import { CategoryModel } from '@core/category/infrastructure/persistence/repository/sequelize/category.model';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
@@ -35,7 +35,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
       where: { category_id: id },
     });
     if (affectedRows !== 1) {
-      throw new NotFoundError(id, this.getEntity());
+      throw new NotFoundError(id);
     }
   }
 
@@ -90,17 +90,13 @@ export class CategorySequelizeRepository implements ICategoryRepository {
     return models.map((m) => CategoryModelMapper.toEntity(m));
   }
 
-  getEntity(): { new (...args: any[]): Category } {
-    return Category;
-  }
-
   async insert(entity: Category): Promise<void> {
     const modelProps = CategoryModelMapper.toModel(entity);
     await this.categoryModel.create(modelProps.toJSON());
   }
 
   async update(entity: Category): Promise<void> {
-    const id = entity.getCategoryId();
+    const id = entity.entityId.value;
     const modelProps = CategoryModelMapper.toModel(entity);
     const [affectedRows] = await this.categoryModel.update(
       modelProps.toJSON(),
@@ -109,7 +105,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
       },
     );
     if (affectedRows !== 1) {
-      throw new NotFoundError(id, this.getEntity());
+      throw new NotFoundError(id);
     }
   }
 

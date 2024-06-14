@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { startApp } from '../../../src/nest-modules/shared-module/testing/helpers';
 import { ICategoryRepository } from '@core/category/domain/repository/category.repository.interface';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
 import { CATEGORY_PROVIDERS } from '../../../src/nest-modules/categories-module/categories.providers';
 

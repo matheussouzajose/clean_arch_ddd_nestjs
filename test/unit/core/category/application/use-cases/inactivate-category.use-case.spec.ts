@@ -5,7 +5,7 @@ import {
   Uuid,
 } from '@core/shared/domain/value-objects/uuid.vo';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 
 describe('InactivateCategoryUseCase Unit Tests', () => {
   let useCase: UpdateCategoryUseCase;
@@ -23,7 +23,7 @@ describe('InactivateCategoryUseCase Unit Tests', () => {
     const categoryId = new Uuid();
     await expect(() =>
       useCase.execute({ id: categoryId.value, name: 'fake' }),
-    ).rejects.toThrow(new NotFoundError(categoryId.value, Category));
+    ).rejects.toThrow(new NotFoundError(categoryId.value));
   });
 
   test('should throw an error when aggregate is not valid', async () => {
@@ -31,7 +31,7 @@ describe('InactivateCategoryUseCase Unit Tests', () => {
     repository.items = [aggregate];
     await expect(() =>
       useCase.execute({
-        id: aggregate.getCategoryId(),
+        id: aggregate.entityId.value,
         name: 't'.repeat(256),
       }),
     ).rejects.toThrowError('Entity Validation Error');
@@ -42,12 +42,12 @@ describe('InactivateCategoryUseCase Unit Tests', () => {
     const entity = Category.create({ name: 'Movie' });
     repository.items = [entity];
     let output = await useCase.execute({
-      id: entity.getCategoryId(),
+      id: entity.entityId.value,
       name: 'test',
     });
     expect(spyUpdate).toHaveBeenCalledTimes(1);
     expect(output).toStrictEqual({
-      id: entity.getCategoryId(),
+      id: entity.entityId.value,
       name: 'test',
       description: null,
       isActive: true,
@@ -65,18 +65,18 @@ describe('InactivateCategoryUseCase Unit Tests', () => {
         name: string;
         description: null | string;
         isActive: boolean;
-        createdAt: Date;
+        createdAt: string;
       };
     };
     const arrange: Arrange[] = [
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -85,11 +85,11 @@ describe('InactivateCategoryUseCase Unit Tests', () => {
       },
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -98,11 +98,11 @@ describe('InactivateCategoryUseCase Unit Tests', () => {
       },
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -111,11 +111,11 @@ describe('InactivateCategoryUseCase Unit Tests', () => {
       },
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -124,11 +124,11 @@ describe('InactivateCategoryUseCase Unit Tests', () => {
       },
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -137,12 +137,12 @@ describe('InactivateCategoryUseCase Unit Tests', () => {
       },
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -158,7 +158,7 @@ describe('InactivateCategoryUseCase Unit Tests', () => {
         ...('description' in i.input && { description: i.input.description }),
       });
       expect(output).toStrictEqual({
-        id: entity.getCategoryId(),
+        id: entity.entityId.value,
         name: i.expected.name,
         description: i.expected.description,
         isActive: i.expected.isActive,

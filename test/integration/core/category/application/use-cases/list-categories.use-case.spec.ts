@@ -2,7 +2,7 @@ import { ListCategoriesUseCase } from '@core/category/application/use-cases/list
 import { CategorySequelizeRepository } from '@core/category/infrastructure/persistence/repository/sequelize/category-sequelize.repository';
 import { setupSequelize } from '@core/shared/infrastructure/testing/helpers';
 import { CategoryModel } from '@core/category/infrastructure/persistence/repository/sequelize/category.model';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { CategoryOutputMapper } from '@core/category/application/use-cases/common/category-output.dto';
 
 describe('ListCategoriesUseCase Integration Tests', () => {

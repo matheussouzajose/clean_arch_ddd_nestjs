@@ -1,6 +1,6 @@
 import { InMemorySearchableRepository } from '@core/shared/infrastructure/persistence/repository/in-memory/in-memory-searchable.repository';
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import {
   CategoryFilter,
   ICategoryRepository,

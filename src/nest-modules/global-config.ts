@@ -18,9 +18,9 @@ export function applyGlobalConfig(app: INestApplication) {
     // new WrapperDataInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
   );
-  // app.useGlobalFilters(
-  // new EntityValidationErrorFilter(),
-  // new NotFoundErrorFilter(),
-  // );
+  app.useGlobalFilters(
+    new EntityValidationErrorFilter(),
+    new NotFoundErrorFilter(),
+  );
   // app.setGlobalPrefix('api/v1');
 }

@@ -1,4 +1,4 @@
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 
 export type CategoryOutput = {
   id: string;

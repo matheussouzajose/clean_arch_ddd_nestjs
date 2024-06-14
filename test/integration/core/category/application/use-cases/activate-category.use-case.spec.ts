@@ -3,7 +3,7 @@ import { setupSequelize } from '@core/shared/infrastructure/testing/helpers';
 import { CategoryModel } from '@core/category/infrastructure/persistence/repository/sequelize/category.model';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { ActivateCategoryUseCase } from '@core/category/application/use-cases/activate-category/activate-category.use-case';
 
 describe('ActivateUseCase Integration Tests', () => {
@@ -20,7 +20,7 @@ describe('ActivateUseCase Integration Tests', () => {
   test('should throws error when entity not found', async () => {
     const categoryId = new Uuid().value;
     await expect(() => useCase.execute({ id: categoryId })).rejects.toThrow(
-      new NotFoundError(categoryId, Category),
+      new NotFoundError(categoryId),
     );
   });
 
@@ -32,7 +32,7 @@ describe('ActivateUseCase Integration Tests', () => {
       .build();
     expect(entity.getIsActive()).toBeFalsy();
     await repository.insert(entity);
-    const output = await useCase.execute({ id: entity.getCategoryId() });
+    const output = await useCase.execute({ id: entity.entityId.value });
     expect(output.isActive).toBeTruthy();
   });
 });

@@ -4,7 +4,7 @@ import { setupSequelize } from '@core/shared/infrastructure/testing/helpers';
 import { CategoryModel } from '@core/category/infrastructure/persistence/repository/sequelize/category.model';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 
 describe('UpdateCategoryUseCase Integration Tests', () => {
   let useCase: UpdateCategoryUseCase;
@@ -21,7 +21,7 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
     const categoryId = new Uuid();
     await expect(() =>
       useCase.execute({ id: categoryId.value, name: 'fake' }),
-    ).rejects.toThrow(new NotFoundError(categoryId.value, Category));
+    ).rejects.toThrow(new NotFoundError(categoryId.value));
   });
 
   test('should update a category', async () => {
@@ -31,11 +31,11 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       .build();
     await repository.insert(entity);
     let output = await useCase.execute({
-      id: entity.getCategoryId(),
+      id: entity.entityId.value,
       name: 'test',
     });
     expect(output).toStrictEqual({
-      id: entity.getCategoryId(),
+      id: entity.entityId.value,
       name: 'test',
       description: entity.getDescription(),
       isActive: true,
@@ -53,18 +53,18 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
         name: string;
         description: null | string;
         isActive: boolean;
-        createdAt: Date;
+        createdAt: string;
       };
     };
     const arrange: Arrange[] = [
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -73,11 +73,11 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       },
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -86,11 +86,11 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       },
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -99,11 +99,11 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       },
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -112,11 +112,11 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       },
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: 'some description',
           isActive: true,
@@ -125,12 +125,12 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       },
       {
         input: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: null,
         },
         expected: {
-          id: entity.getCategoryId(),
+          id: entity.entityId.value,
           name: 'test',
           description: null,
           isActive: true,
@@ -147,14 +147,14 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
       });
       const entityUpdated = await repository.findById(new Uuid(i.input.id));
       expect(output).toStrictEqual({
-        id: entity.getCategoryId(),
+        id: entity.entityId.value,
         name: i.expected.name,
         description: i.expected.description,
         isActive: i.expected.isActive,
         createdAt: entityUpdated!.getCreatedAt(),
       });
       expect(entityUpdated!.toJSON()).toStrictEqual({
-        categoryId: entity.getCategoryId(),
+        categoryId: entity.entityId.value,
         name: i.expected.name,
         description: i.expected.description,
         isActive: i.expected.isActive,

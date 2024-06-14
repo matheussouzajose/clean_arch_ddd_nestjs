@@ -1,15 +1,15 @@
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 import { CategoryModel } from '@core/category/infrastructure/persistence/repository/sequelize/category.model';
 import { LoadEntityError } from '@core/shared/domain/errors/validation.error';
 
 export class CategoryModelMapper {
   static toModel(entity: Category): CategoryModel {
     return CategoryModel.build({
-      category_id: entity.getCategoryId(),
+      category_id: entity.entityId.value,
       name: entity.getName(),
       description: entity.getDescription(),
       is_active: entity.getIsActive(),
-      created_at: entity.getCreatedAt(),
+      created_at: new Date(entity.getCreatedAt()),
     });
   }
 

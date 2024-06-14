@@ -1,11 +1,14 @@
 import { Chance } from 'chance';
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
-import { Category } from '@core/category/domain/entity/category.entity';
+import {
+  Category,
+  CategoryId,
+} from '@core/category/domain/entity/category.aggregate';
 
 type PropOrFactory<T> = T | ((index: number) => T);
 
 export class CategoryFakeBuilder<TBuild = any> {
-  private _category_id: PropOrFactory<Uuid> | undefined = undefined;
+  private _category_id: PropOrFactory<Uuid>;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private _name: PropOrFactory<string> = (_index) => this.chance.word();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -13,7 +16,7 @@ export class CategoryFakeBuilder<TBuild = any> {
     this.chance.paragraph();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private _is_active: PropOrFactory<boolean> = (_index) => true;
-  private _created_at: PropOrFactory<Date> | undefined = undefined;
+  private _created_at: PropOrFactory<Date>;
 
   private readonly countObjs: number;
 
@@ -73,27 +76,15 @@ export class CategoryFakeBuilder<TBuild = any> {
       .map((_, index) => {
         const category = Category.restore({
           categoryId: !this._category_id
-            ? new Uuid().value
+            ? new CategoryId().value
             : this.callFactory(this._category_id, index).value,
           name: this.callFactory(this._name, index),
           description: this.callFactory(this._description, index),
           isActive: this.callFactory(this._is_active, index),
-          ...(this._created_at && {
-            createdAt: this.callFactory(this._created_at, index),
-          }),
+          createdAt: !this._created_at
+            ? new Date()
+            : this.callFactory(this._created_at, index),
         });
-
-        // const category = new Category({
-        //   categoryId: !this._category_id
-        //     ? undefined
-        //     : this.callFactory(this._category_id, index),
-        //   name: this.callFactory(this._name, index),
-        //   description: this.callFactory(this._description, index),
-        //   isActive: this.callFactory(this._is_active, index),
-        //   ...(this._created_at && {
-        //     createdAt: this.callFactory(this._created_at, index),
-        //   }),
-        // });
         category.validate();
         return category;
       });

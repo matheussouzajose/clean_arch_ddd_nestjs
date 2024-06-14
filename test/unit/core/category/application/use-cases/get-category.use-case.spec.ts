@@ -4,7 +4,7 @@ import { setupSequelize } from '@core/shared/infrastructure/testing/helpers';
 import { CategoryModel } from '@core/category/infrastructure/persistence/repository/sequelize/category.model';
 import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
-import { Category } from '@core/category/domain/entity/category.entity';
+import { Category } from '@core/category/domain/entity/category.aggregate';
 
 describe('DeleteCategoryUseCase Integration Tests', () => {
   let useCase: DeleteCategoryUseCase;
@@ -20,7 +20,7 @@ describe('DeleteCategoryUseCase Integration Tests', () => {
   test('should throws error when entity not found', async () => {
     const categoryId = new Uuid().value;
     await expect(() => useCase.execute({ id: categoryId })).rejects.toThrow(
-      new NotFoundError(categoryId, Category),
+      new NotFoundError(categoryId),
     );
   });
 
@@ -28,7 +28,7 @@ describe('DeleteCategoryUseCase Integration Tests', () => {
     const category = Category.fake().aCategory().build();
     await repository.insert(category);
     await useCase.execute({
-      id: category.getCategoryId(),
+      id: category.entityId.value,
     });
     const entityId = category.entityId as Uuid;
     await expect(repository.findById(entityId)).resolves.toBeNull();
